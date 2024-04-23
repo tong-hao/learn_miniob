@@ -1,3 +1,5 @@
+3rd_install
+deps/3rd/libevent
 ./deps/3rd
 ./deps/libevent
 ./deps/googletest

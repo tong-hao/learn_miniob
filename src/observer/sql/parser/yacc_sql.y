@@ -59,6 +59,7 @@ ArithmeticExpr *create_arithmetic_expression(ArithmeticExpr::Type type,
         DROP
         TABLE
         TABLES
+        TABLES2
         INDEX
         CALC
         SELECT
@@ -149,6 +150,7 @@ ArithmeticExpr *create_arithmetic_expression(ArithmeticExpr::Type type,
 %type <sql_node>            create_table_stmt
 %type <sql_node>            drop_table_stmt
 %type <sql_node>            show_tables_stmt
+%type <sql_node>            show_tables_stmt2
 %type <sql_node>            desc_table_stmt
 %type <sql_node>            create_index_stmt
 %type <sql_node>            drop_index_stmt
@@ -186,6 +188,7 @@ command_wrapper:
   | create_table_stmt
   | drop_table_stmt
   | show_tables_stmt
+  | show_tables_stmt2
   | desc_table_stmt
   | create_index_stmt
   | drop_index_stmt
@@ -247,10 +250,15 @@ show_tables_stmt:
       $$ = new ParsedSqlNode(SCF_SHOW_TABLES);
     }
     ;
+show_tables_stmt2:
+    SHOW TABLES2 {
+      $$ = new ParsedSqlNode(SCF_SHOW_TABLES);
+    }
+    ;
 
 desc_table_stmt:
     DESC ID  {
-      $$ = new ParsedSqlNode(SCF_DESC_TABLE);
+      $$ = new SCF_SHOW_TABLES(SCF_DESC_TABLE);
       $$->desc_table.relation_name = $2;
       free($2);
     }
